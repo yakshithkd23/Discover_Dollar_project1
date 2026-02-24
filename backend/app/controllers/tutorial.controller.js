@@ -51,3 +51,13 @@ exports.delete = async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 };
+
+// Delete all
+exports.deleteAll = async (req, res) => {
+  try {
+    await Tutorial.deleteMany({});
+    res.send({ message: "All tutorials deleted successfully." });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};

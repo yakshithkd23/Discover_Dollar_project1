@@ -5,19 +5,30 @@ services:
     image: mongo:6
     container_name: dd-mongo
     restart: always
+    command: mongod --wiredTigerCacheSizeGB 0.25
     volumes:
       - mongo-data:/data/db
 
   backend:
-    build: .
+    build: ./backend
     container_name: dd-backend
     restart: always
     ports:
       - "8080:8080"
     environment:
       - MONGO_URL=mongodb://mongodb:27017/discover_dollar_db
+      - NODE_ENV=production
     depends_on:
       - mongodb
+
+  frontend:
+    build: ./frontend
+    container_name: dd-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
   mongo-data:
