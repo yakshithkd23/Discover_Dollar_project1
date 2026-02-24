@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: dd-mongo
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: .
+    container_name: dd-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/discover_dollar_db
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo-data:
